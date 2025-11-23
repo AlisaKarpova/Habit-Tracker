@@ -1,14 +1,16 @@
 import random
 import json
+from typing import Set, List
+
 
 class Motivation:
-    def __init__(self, file_path='motivation_quotes.json'):
+    def __init__(self, file_path: str = 'motivation_quotes.json'):
         with open(file_path, encoding='utf-8') as file:
-            self.quotes = json.load(file)
+            self.quotes: List[str] = json.load(file)
 
-        self.used_quotes = set()
+        self.used_quotes: Set[str] = set()
 
-    def give_random_quote(self):
+    def give_random_quote(self) -> str:
         while True:
             selected_quote = random.choice(self.quotes)
 
