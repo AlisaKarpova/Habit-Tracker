@@ -21,10 +21,9 @@ class User:
 
 
 class Habit:
-    def __init__(self, name: str, frequency: str,
-                 start_day: str, end_day: str):
+    def __init__(self, name: str, freq: str, start_day: str, end_day: str):
         self.habit_name = name
-        self.frequency = frequency
+        self.frequency = freq
         self.start_day = datetime.strptime(start_day, "%d-%m-%Y").date()
         self.end_day = datetime.strptime(end_day, "%d-%m-%Y").date()
         self.completed_days: List[date] = []
@@ -44,8 +43,10 @@ class Habit:
     def completion_rate(self) -> float:
         total_days = self.total_period()
         completed_count = len(self.completed_days)
-        return (round((completed_count / total_days) * 100, 2)
-                if total_days > 0 else 0)
+        if total_days > 0:
+            return round((completed_count / total_days) * 100, 2)
+        else:
+            return 0
 
 
 class Record:
