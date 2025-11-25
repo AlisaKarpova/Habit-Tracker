@@ -1,10 +1,10 @@
-import random
 import json
-from typing import Set, List
+import random
+from typing import List, Set
 
 
 class Motivation:
-    def __init__(self, file_path: str = 'motivation_quotes.json'):
+    def __init__(self, file_path: str = 'src/habit_tracker/motivation/motivation_quotes.json'):
         with open(file_path, encoding='utf-8') as file:
             self.quotes: List[str] = json.load(file)
 
@@ -19,4 +19,5 @@ class Motivation:
 
                 if len(self.used_quotes) == len(self.quotes):
                     self.used_quotes.clear()
-            return selected_quote
+
+                return selected_quote

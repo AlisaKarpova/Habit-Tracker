@@ -1,6 +1,6 @@
+from datetime import date, datetime
+from typing import List, Optional, Set
 from uuid import uuid4
-from datetime import datetime, date
-from typing import Optional, Set, List
 
 
 class User:
@@ -24,16 +24,16 @@ class Habit:
     def __init__(self, name: str, freq: str, start_day: str, end_day: str):
         self.habit_name = name
         self.frequency = freq
-        self.start_day = datetime.strptime(start_day, "%d-%m-%Y").date()
-        self.end_day = datetime.strptime(end_day, "%d-%m-%Y").date()
+        self.start_day = datetime.strptime(start_day, '%d-%m-%Y').date()
+        self.end_day = datetime.strptime(end_day, '%d-%m-%Y').date()
         self.completed_days: List[date] = []
 
     def is_complited(self, day: str) -> bool:
-        target_day = datetime.strptime(day, "%d-%m-%Y").date()
+        target_day = datetime.strptime(day, '%d-%m-%Y').date()
         return target_day in self.completed_days
 
     def completion_mark(self, day: str) -> None:
-        target_day = datetime.strptime(day, "%d-%m-%Y").date()
+        target_day = datetime.strptime(day, '%d-%m-%Y').date()
         if self.end_day >= target_day >= self.start_day:
             self.completed_days.append(target_day)
 
@@ -45,15 +45,14 @@ class Habit:
         completed_count = len(self.completed_days)
         if total_days > 0:
             return round((completed_count / total_days) * 100, 2)
-        else:
-            return 0
+        return 0
 
 
 class Record:
-    def __init__(self, habit: str, day: str, mood: str = "", notes: str = ""):
+    def __init__(self, habit: str, day: str, mood: str = '', notes: str = ''):
         self.record_id = str(uuid4())
         self.habit = habit
-        self.day = datetime.strptime(day, "%d-%m-%Y").date()
+        self.day = datetime.strptime(day, '%d-%m-%Y').date()
         self.mood = mood
         self.notes = notes
 
@@ -65,9 +64,5 @@ class Record:
 
     def __str__(self) -> str:
         return (
-            f"ID: {self.record_id}\n"
-            f"Habit Name: {self.habit}\n"
-            f"Date: {self.day}\n"
-            f"Mood: {self.mood}\n"
-            f"Notes: {self.notes}"
+            f'ID: {self.record_id}\nHabit Name: {self.habit}\nDate: {self.day}\nMood: {self.mood}\nNotes: {self.notes}'
         )
