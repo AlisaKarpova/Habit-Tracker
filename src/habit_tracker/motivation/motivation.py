@@ -13,6 +13,9 @@ class Motivation:
         Args:
             file_path (str): path to the JSON file with quotes. By default —
          'src/habit_tracker/motivation/motivation_quotes.json'
+
+         Returns:
+             None
         """
         with open(file_path, encoding='utf-8') as file:
             self.quotes: List[str] = json.load(file)

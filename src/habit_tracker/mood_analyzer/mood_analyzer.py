@@ -10,7 +10,12 @@ class UsersMood:
     """Determine the mood by text."""
 
     def __init__(self):
-        """Initialize the UserMood."""
+        """
+        Initialize the UserMood.
+
+        Returns:
+            None
+        """
         self.analyzer = SentimentIntensityAnalyzer()
         self.analyzer.lexicon.update({'плохое': -2.0, 'хорошее': 4.0, 'нормальное': 2.5})
 
@@ -20,6 +25,9 @@ class UsersMood:
 
         Args:
             record (Record): an instance of the Record class containing the mood text
+
+        Returns:
+            None
         """
         sentiment = self.analyzer.polarity_scores(record.mood)
         compound_score = sentiment['compound']

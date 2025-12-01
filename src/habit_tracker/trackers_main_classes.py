@@ -13,6 +13,9 @@ class User:
         Args:
             name (str): name of the user
             user_id (Optional[str], optional): the user's ID. If not specified, it is generated automatically
+
+        Returns:
+            None
         """
         self.user_name = name
         self.user_id = user_id or str(uuid4())
@@ -24,6 +27,9 @@ class User:
 
         Args:
             habit (str): name of the added habit
+
+        Returns:
+            None
         """
         self.user_habits.add(habit)
 
@@ -33,6 +39,9 @@ class User:
 
         Args:
             habit_to_remove (str): name of the habit that is needed to be removed
+
+        Returns:
+            None
         """
         if habit_to_remove in self.user_habits:
             self.user_habits.remove(habit_to_remove)
@@ -59,6 +68,9 @@ class Habit:
             freq (str): frequency of habit fulfillment ("daily", "every Tuesday")
             start_day (str): starting date in the 'dd-mm-yyyy' format
             end_day (str): final date in the 'dd-mm-yyyy' format
+
+        Returns:
+            None
         """
         self.habit_name = name
         self.frequency = freq
@@ -85,6 +97,9 @@ class Habit:
 
         Args:
             day (str): day the habit was completed, in the 'dd-mm-yyyy' format
+
+        Returns:
+            None
         """
         target_day = datetime.strptime(day, '%d-%m-%Y').date()
         if self.end_day >= target_day >= self.start_day:
@@ -125,6 +140,9 @@ class Record:
             day (str): date of completion in the 'dd-mm-yyyy' format
             mood (str, optional): user's mood. The default value is empty
             notes (str, optional): additional notes. They are empty by default
+
+        Returns:
+            None
         """
         self.record_id = str(uuid4())
         self.habit = habit
@@ -138,6 +156,9 @@ class Record:
 
         Args:
             users_mood (str): some text information about user's state and mood
+
+        Returns:
+            None
         """
         self.mood = users_mood
 
@@ -147,6 +168,9 @@ class Record:
 
         Args:
             users_notes (str): some extra information that the user want to share
+
+        Returns:
+            None
         """
         self.notes = users_notes
 
