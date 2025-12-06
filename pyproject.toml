@@ -9,7 +9,8 @@ dependencies = [
     "pre-commit (>=4.5.0,<5.0.0)",
     "matplotlib (>=3.10.7,<4.0.0)",
     "vadersentiment (>=3.3.2,<4.0.0)",
-    "fastapi (>=0.123.0,<0.124.0)"
+    "fastapi (>=0.123.0,<0.124.0)",
+    "pydantic (>=2.12.5,<3.0.0)"
 ]
 
 [build-system]

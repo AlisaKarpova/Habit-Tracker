@@ -3,63 +3,10 @@ from typing import List, Optional, Set
 from uuid import uuid4
 
 
-class User:
-    """Represent the user."""
-
-    def __init__(self, name: str, user_id: Optional[str] = None):
-        """
-        Initialize the User.
-
-        Args:
-            name (str): name of the user
-            user_id (Optional[str], optional): the user's ID. If not specified, it is generated automatically
-
-        Returns:
-            None
-        """
-        self.user_name = name
-        self.user_id = user_id or str(uuid4())
-        self.user_habits: Set[str] = set()
-
-    def add_habit(self, habit: str) -> None:
-        """
-        Add a new habit.
-
-        Args:
-            habit (str): name of the added habit
-
-        Returns:
-            None
-        """
-        self.user_habits.add(habit)
-
-    def remove_habit(self, habit_to_remove: str) -> None:
-        """
-        Remove the specified habit.
-
-        Args:
-            habit_to_remove (str): name of the habit that is needed to be removed
-
-        Returns:
-            None
-        """
-        if habit_to_remove in self.user_habits:
-            self.user_habits.remove(habit_to_remove)
-
-    def habits(self) -> Set[str]:
-        """
-        Return a set of the user's current habits.
-
-         Returns:
-             Set[str]: set of active user habits
-        """
-        return self.user_habits
-
-
 class Habit:
     """Describe user's habit."""
 
-    def __init__(self, name: str, freq: str, start_day: str, end_day: str):
+    def __init__(self, name: str, freq: str, start_day: str, end_day: str, user: str):
         """
         Initialize the Habit.
 
@@ -77,6 +24,7 @@ class Habit:
         self.start_day = datetime.strptime(start_day, '%d-%m-%Y').date()
         self.end_day = datetime.strptime(end_day, '%d-%m-%Y').date()
         self.completed_days: List[date] = []
+        self.user = user
 
     def is_complited(self, day: str) -> bool:
         """
@@ -128,15 +76,68 @@ class Habit:
         return 0
 
 
+class User:
+    """Represent the user."""
+
+    def __init__(self, name: str, user_id: Optional[str] = None):
+        """
+        Initialize the User.
+
+        Args:
+            name (str): name of the user
+            user_id (Optional[str], optional): the user's ID. If not specified, it is generated automatically
+
+        Returns:
+            None
+        """
+        self.user_name = name
+        self.user_id = user_id or str(uuid4())
+        self.user_habits: Set[Habit] = set()
+
+    def add_habit(self, habit: Habit) -> None:
+        """
+        Add a new habit.
+
+        Args:
+            habit (Habit): an instance of the Habit class
+
+        Returns:
+            None
+        """
+        self.user_habits.add(habit)
+
+    def remove_habit(self, habit_to_remove: Habit) -> None:
+        """
+        Remove the specified habit.
+
+        Args:
+            habit_to_remove (Habit): an instance of the Habit class
+
+        Returns:
+            None
+        """
+        if habit_to_remove in self.user_habits:
+            self.user_habits.remove(habit_to_remove)
+
+    def habits(self) -> Set[Habit]:
+        """
+        Return a set of the user's current habits.
+
+         Returns:
+             Set[str]: set of active user habits
+        """
+        return self.user_habits
+
+
 class Record:
     """Record of habit fulfillment."""
 
-    def __init__(self, habit: str, day: str, mood: str = '', notes: str = ''):
+    def __init__(self, habit: Habit, day: str, mood: str = '', notes: str = ''):
         """
         Initialize the Record.
 
         Args:
-            habit (str): name of the habit
+            habit (Habit): an instance of the Habit class
             day (str): date of completion in the 'dd-mm-yyyy' format
             mood (str, optional): user's mood. The default value is empty
             notes (str, optional): additional notes. They are empty by default
