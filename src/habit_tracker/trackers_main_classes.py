@@ -6,7 +6,7 @@ from uuid import uuid4
 class Habit:
     """Describe user's habit."""
 
-    def __init__(self, name: str, freq: str, start_day: str, end_day: str, user: str):
+    def __init__(self, name: str, freq: str, start_day: str, end_day: str, user_id: str):
         """
         Initialize the Habit.
 
@@ -15,6 +15,7 @@ class Habit:
             freq (str): frequency of habit fulfillment ("daily", "every Tuesday")
             start_day (str): starting date in the 'dd-mm-yyyy' format
             end_day (str): final date in the 'dd-mm-yyyy' format
+            user_id (str): associated user ID
 
         Returns:
             None
@@ -24,7 +25,8 @@ class Habit:
         self.start_day = datetime.strptime(start_day, '%d-%m-%Y').date()
         self.end_day = datetime.strptime(end_day, '%d-%m-%Y').date()
         self.completed_days: List[date] = []
-        self.user = user
+        self.user_id = user_id
+        self.habit_id = str(uuid4())
 
     def is_complited(self, day: str) -> bool:
         """
@@ -124,7 +126,7 @@ class User:
         Return a set of the user's current habits.
 
          Returns:
-             Set[str]: set of active user habits
+             Set[Habit]: set of active user habits
         """
         return self.user_habits
 
@@ -132,7 +134,7 @@ class User:
 class Record:
     """Record of habit fulfillment."""
 
-    def __init__(self, habit: Habit, day: str, mood: str = '', notes: str = ''):
+    def __init__(self, habit: Habit, day: date, mood: str = '', notes: str = ''):
         """
         Initialize the Record.
 
@@ -147,7 +149,7 @@ class Record:
         """
         self.record_id = str(uuid4())
         self.habit = habit
-        self.day = datetime.strptime(day, '%d-%m-%Y').date()
+        self.day = day
         self.mood = mood
         self.notes = notes
 
