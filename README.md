@@ -21,3 +21,40 @@
    ```
    poetry install
    ```
+   
+## Примеры использования API
+
+1. Запустите приложение:
+```
+uvicorn src.habit_tracker.models.fastapi_model:app --reload
+```
+2. Получите приветственное сообщение:
+ - запрос curl:
+```
+curl -X 'GET' \
+  'http://localhost:8000/' \
+  -H 'accept: application/json'
+```
+-- пример вывода:
+```
+{
+  "message": "Привет! Расскажи о привычках, которые ты хочешь соблюдать",
+  "motivational_quote": "Если ты можешь мечтать об этом, ты можешь это сделать."
+}
+```
+3. Добавьте пользователя:
+ - запрос curl:
+```
+curl -X 'POST' \
+  'http://localhost:8000/users/?name=%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80' \
+  -H 'accept: application/json' \
+  -d ''
+```
+- пример вывода:
+```
+{
+  "user_id": "ff59ec46-b27b-4212-9003-407c482cb225",
+  "message": "Пользователь Александр зарегистрирован. Скопируй и сохрани id. Он еще пригодится"
+}
+```
+   
