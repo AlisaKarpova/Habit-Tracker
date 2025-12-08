@@ -18,7 +18,7 @@ class GraphicsAnalytics:
         """
         self.habit = habit
 
-    def plot_completion_rate(self):
+    def plot_completion_rate(self) -> None:
         """
         Plot the pie chart.
 

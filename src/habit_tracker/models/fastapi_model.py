@@ -20,18 +20,18 @@ def db_connect():
     Connect database with fastapi.
 
     Returns:
-        str: db_path
+        str: connection
     """
     db_path = 'src/habit_tracker/models/habits.db'
     return sqlite3.connect(db_path)
 
 
 @app.get('/')
-async def root():
+async def root() -> dict[str, str]:
     """Send the greeting message.
 
     Returns:
-        str: greeting message for the user
+        dict[str, str]: greeting message for the user
     """
     motivation = Motivation()
     quote = motivation.give_random_quote()
@@ -40,14 +40,14 @@ async def root():
 
 
 @app.post('/users/')
-async def register_user(name: str):
+async def register_user(name: str) -> dict[str, str]:
     """Register a new user.
 
     Args:
         name (str): name of the user
 
     Returns:
-        str: message that the user was registered
+        dict[str, str]: message that the user was registered
     """
     user = User(name=name)
     users[user.user_id] = user
@@ -64,7 +64,7 @@ async def register_user(name: str):
 
 
 @app.post('/users/{user_id}/habits/')
-async def add_habit(user_id: str, habits_name: str, freq: str, start_day: str, end_day: str):
+async def add_habit(user_id: str, habits_name: str, freq: str, start_day: str, end_day: str) -> dict[str, str]:
     """Add a new habit to the user.
 
     Args:
@@ -75,7 +75,7 @@ async def add_habit(user_id: str, habits_name: str, freq: str, start_day: str, e
         end_day (str): the last day of the habit
 
     Returns:
-        str: message that the habit was added to the user
+        dict[str, str]: message that the habit was added to the user
     """
     try:
         user = users.get(user_id)
@@ -101,7 +101,7 @@ async def add_habit(user_id: str, habits_name: str, freq: str, start_day: str, e
 
 
 @app.delete('/users/{user_id}/habits/{habit_name}')
-async def delete_habit(user_id: str, habit_name: str):
+async def delete_habit(user_id: str, habit_name: str) -> dict[str, str]:
     """Remove the habit from the user.
 
     Args:
@@ -109,7 +109,7 @@ async def delete_habit(user_id: str, habit_name: str):
         habit_name (str): name of the habit to remove
 
     Returns:
-        str: message that the habit is removed
+        dict[str, str]: message that the habit is removed
     """
     user = users.get(user_id)
     if user is None:
@@ -126,7 +126,7 @@ async def delete_habit(user_id: str, habit_name: str):
 
 
 @app.get('/habits/{habit_name}/check/{day}')
-async def check_habit_completion(habit_name: str, day: str):
+async def check_habit_completion(habit_name: str, day: str) -> bool:
     """
     Check whether the habit is marked as completed on the specified date.
 
@@ -144,7 +144,7 @@ async def check_habit_completion(habit_name: str, day: str):
 
 
 @app.post('/habits/{habit_name}/mark/{day}')
-async def mark_habit_completion(habit_name: str, day: str):
+async def mark_habit_completion(habit_name: str, day: str) -> dict[str, str]:
     """
     Record the fulfillment of a habit on a specified date.
 
@@ -153,7 +153,7 @@ async def mark_habit_completion(habit_name: str, day: str):
         day (str): the day of fulfillment in the 'dd-mm-yyyy' format
 
     Returns:
-        str: message that the habit was fixed
+        dict[str, str]: message that the habit was fixed
     """
     habit = next((h for h in habits if h.habit_name == habit_name), None)
     if habit is None:
@@ -172,7 +172,7 @@ async def mark_habit_completion(habit_name: str, day: str):
 
 
 @app.get('/habits/{habit_name}/rate')
-async def get_habit_completion_rate(habit_name: str):
+async def get_habit_completion_rate(habit_name: str) -> dict[str, str]:
     """
     Count the habit fulfillment percentage.
 
@@ -180,7 +180,7 @@ async def get_habit_completion_rate(habit_name: str):
         habit_name (str): name of the habit
 
     Returns:
-        float: the percentage of the fulfillment
+        dict[str, str]: message with the percentage of the fulfillment
     """
     habit = next((h for h in habits if h.habit_name == habit_name), None)
     if habit is None:
@@ -190,7 +190,7 @@ async def get_habit_completion_rate(habit_name: str):
 
 
 @app.post('/habits/{habit_name}/records/')
-async def create_record(habit_name: str, day: str, mood: str = '', notes: str = ''):
+async def create_record(habit_name: str, day: str, mood: str = '', notes: str = '') -> dict[str, str]:
     """
     Create a new record for a habit.
 
@@ -201,7 +201,7 @@ async def create_record(habit_name: str, day: str, mood: str = '', notes: str = 
         notes (str, optional): additional notes. Default is empty.
 
     Returns:
-        dict: JSON response with success or error message
+        dict[str, str]: JSON response with success or error message
     """
     habit = next((h for h in habits if h.habit_name == habit_name), None)
     if habit is None:
@@ -235,7 +235,7 @@ async def create_record(habit_name: str, day: str, mood: str = '', notes: str = 
 
 
 @app.post('/habits/{habit_name}/records/{record_id}/mood')
-async def update_record_mood(habit_name: str, record_id: str, mood: str = ''):
+async def update_record_mood(habit_name: str, record_id: str, mood: str = '') -> dict[str, str]:
     """Update mood.
 
     Args:
@@ -244,7 +244,7 @@ async def update_record_mood(habit_name: str, record_id: str, mood: str = ''):
         mood (str, optional): user's mood. The default value is empty
 
     Returns:
-        str: message that mood was updated
+        dict[str, str]: message that mood was updated
     """
     habit = next((h for h in habits if h.habit_name == habit_name), None)
     if habit is None:
@@ -268,7 +268,7 @@ async def update_record_mood(habit_name: str, record_id: str, mood: str = ''):
 
 
 @app.post('/habits/{habit_name}/records/{record_id}/notes')
-async def update_record_notes(habit_name: str, record_id: str, notes: str = ''):
+async def update_record_notes(habit_name: str, record_id: str, notes: str = '') -> dict[str, str]:
     """Update notes.
 
     Args:
@@ -277,7 +277,7 @@ async def update_record_notes(habit_name: str, record_id: str, notes: str = ''):
         notes (str, optional): additional notes. They are empty by default
 
     Returns:
-        str: message that notes were updated
+        dict[str, str]: message that notes were updated
     """
     habit = next((h for h in habits if h.habit_name == habit_name), None)
     if habit is None:
@@ -301,7 +301,7 @@ async def update_record_notes(habit_name: str, record_id: str, notes: str = ''):
 
 
 @app.get('/users/')
-async def get_all_users():
+async def get_all_users() -> list:
     """Get all users from the database.
 
     Returns:
@@ -314,7 +314,7 @@ async def get_all_users():
 
 
 @app.get('/habits/')
-async def get_all_habits():
+async def get_all_habits() -> list:
     """Get all habits from the database.
 
     Returns:
@@ -327,7 +327,7 @@ async def get_all_habits():
 
 
 @app.get('/records/')
-async def get_all_records():
+async def get_all_records() -> list:
     """Get all records from the database.
 
     Returns:
